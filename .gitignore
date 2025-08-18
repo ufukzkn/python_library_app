@@ -1,0 +1,20 @@
+﻿# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+.ipynb_checkpoints/
+
+# Env
+.venv/
+env/
+venv/
+
+# IDE
+.vscode/
+*.code-workspace
+
+# Data/Artifacts
+lib.json
+data/*.json

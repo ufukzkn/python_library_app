@@ -1,0 +1,14 @@
+[
+  {
+    "title": "hebele",
+    "author": "rıfat",
+    "isbn": "123321",
+    "is_borrowed": false
+  },
+  {
+    "title": "birikiüç",
+    "author": "123",
+    "isbn": "123",
+    "is_borrowed": false
+  }
+]
