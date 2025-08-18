@@ -7,7 +7,7 @@ Bu depo, 3 aşamalı bir OOP projesini içerir:
 
 ## Proje Yapısı
 ```
-python_oop_kutuphane/
+python_library_app/
 ├─ stage1_oop/
 │  ├─ __init__.py
 │  ├─ models.py           # Book dataclass (to_dict/from_dict)
