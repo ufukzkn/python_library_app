@@ -1,65 +1,134 @@
-# Global AI Hub Python 202 Bootcamp Proje
+# Global AI Hub Python 202 Bootcamp Projesi
 
-Bu depo, 3 aşamalı bir OOP projesini içerir:
-- stage1_oop: Temel OOP + JSON kalıcılık + birim testleri
-- stage2_oop: (Plan) Gelişmiş özellikler
-- stage3_oop: (Plan) Son dokunuşlar ve entegrasyon
+Bu depo, adım adım geliştirilen 3 aşamalı bir kütüphane yönetim sistemi projesini içerir:
+
+- **Stage 1**: Temel OOP yapısı + JSON kalıcılık + birim testleri
+- **Stage 2**: API entegrasyonu (Open Library) + hata yönetimi
+- **Stage 3**: (Planlanan) Son dokunuşlar ve iyileştirmeler
 
 ## Proje Yapısı
+
 ```
-python_library_app/
-├─ stage1_oop/
-│  ├─ __init__.py
-│  ├─ models.py           # Book dataclass (to_dict/from_dict)
-│  ├─ library.py          # Library: add/list/find/remove + JSON kalıcılık
+python_oop_kutuphane/
+├─ stage1_oop/                  # Aşama 1: Temel OOP
+│  ├─ models.py                 # Book veri sınıfı
+│  ├─ library.py                # Kütüphane yönetimi + JSON
+│  ├─ main.py                   # CLI arayüzü
+│  └─ tests/                    # Birim testleri
+│     └─ test_library.py
+│
+├─ stage2_api/                  # Aşama 2: API Entegrasyonu
+│  ├─ models.py                 # Geliştirilmiş Book modeli
+│  ├─ library.py                # API entegrasyonu + httpx
+│  ├─ main.py                   # Gelişmiş CLI (ISBN API desteği)
+│  ├─ stage2_demo.py            # Demo: Stage 1 ve 2 özellikleri
 │  └─ tests/
-│     └─ test_library.py  # Birim testleri (pytest)
-├─ pytest.ini             # [pytest] pythonpath = .
-├─ requirements.txt
-└─ README.md
+│     └─ test_library_api.py
+│
+├─ pytest.ini                   # Test yapılandırması
+├─ requirements.txt             # Proje bağımlılıkları
+└─ README.md                    # Bu dosya
 ```
 
-## Kurulum (uv ile)
-Windows PowerShell:
+## Kurulum
+
+Windows PowerShell ile kurulum:
+
 ```powershell
-# Sanal ortam
-uv venv
+# Sanal ortam oluşturma
+py -m venv .venv
 .\.venv\Scripts\Activate.ps1
 
 # Bağımlılıklar
-uv pip install -r requirements.txt
-# veya
-uv pip install pytest pydantic
+pip install -r requirements.txt
 ```
 
-Not: PowerShell script engeli varsa:
+Not: PowerShell'de script çalıştırma sorunu yaşarsanız:
 ```powershell
 Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned
 ```
 
-## Test Çalıştırma
-Kök dizinden:
+## Çalıştırma
+
+### Stage 1 (Temel Kütüphane)
 ```powershell
-pytest -q
-# veya aktivasyonsuz:
-uv run pytest -q
+py -m stage1_oop.main
 ```
 
-## Stage 1 Özeti
-- Book: title, author, isbn alanları; to_dict()/from_dict() ile serileştirme.
-- Library:
-  - add_book(book) -> bool (aynı ISBN ikinci kez eklenemez)
-  - list_books() -> iterator
-  - find_book(isbn) -> Book | None
-  - remove_book(isbn) -> bool
-  - Kalıcılık: JSON dosyası. Varsayılan ad `lib.json`; istenirse `Library(filename=Path("data/library.json"))` ile özelleştirilebilir.
-  - Bozuk JSON dosyası yüklemeyi bozmaz; güvenli fallback.
+### Stage 2 (API Entegrasyonu)
+```powershell
+# CLI Arayüzü
+py -m stage2_api.main
 
-## Stage 2 ve 3
-- Bu aşamalar için gereksinimler belirlendikçe ilgili klasörlerde kod ve testler eklenecektir.
-- README bu bölümler genişledikçe güncellenecektir.
+# Demo Script (Stage 1 ve Stage 2 özelliklerini test eder)
+py -m stage2_api.stage2_demo
+```
 
-## Sorun Giderme
-- `ModuleNotFoundError: stage1_oop`: Kökten çalıştırın ve `stage1_oop/__init__.py` olduğundan emin olun.
-- `pytest.ini ... '\ufeff[pytest]'`: Dosyayı BOM olmadan UTF-8 olarak kaydedin.
-- Venv aktivasyonu: `.\.venv\Scripts\Activate.ps1`
+**Demo Script Açıklaması:**
+- `stage2_demo.py` hem Stage 1 hem de Stage 2 özelliklerini test eder
+- **Oluşturduğu dosyalar:**
+  - `stage1_demo.json`: Manuel kitap ekleme testi (Stage 1 uyumluluğu)
+  - `stage2_demo.json`: API ile kitap ekleme testi (Stage 2 özellikleri)
+     (Demoyu bu 2 json dosyasının içini boşaltarak deneyebilirsiniz)
+- **Test senaryoları:**
+    
+  - Stage 1 uyumluluğu: Manuel kitap ekleme
+  - Stage 2 API: ISBN ile otomatik kitap ekleme
+  - Hata yönetimi: Geçersiz ISBN testi
+
+## Test Etme
+
+```powershell
+# Tüm testler
+pytest -q
+
+# Sadece Stage 1 testleri
+pytest -q stage1_oop/tests
+
+# Sadece Stage 2 testleri
+pytest -q stage2_api/tests
+```
+
+## Stage 1: Temel OOP Özellikleri
+
+- **Book** sınıfı:
+  - Alanlar: title, author, isbn
+  - JSON serileştirme: to_dict() / from_dict()
+
+- **Library** sınıfı:
+  - `add_book(book)`: Kitap ekleme (aynı ISBN tekrar eklenemez)
+  - `list_books()`: Tüm kitapları listeleme
+  - `find_book(isbn)`: ISBN ile kitap bulma
+  - `remove_book(isbn)`: Kitap silme
+  - JSON dosya kalıcılığı (varsayılan: lib.json)
+  - Güvenli dosya işlemleri (bozuk JSON için fallback)
+
+## Stage 2: API Entegrasyonu
+
+- **Open Library API** entegrasyonu:
+  - `add_book(isbn)`: ISBN ile otomatik kitap ekleme
+  - API URL: https://openlibrary.org/isbn/{isbn}.json
+  
+- **Yeni Özellikler**:
+  - httpx ile HTTP istekleri
+  - Kitap bilgilerini API'den otomatik çekme
+  - Güçlü hata yönetimi (ağ hatası, 404, eksik veri)
+  - Redirect yönetimi ve timeout
+  - Stage 1 ile tam uyumluluk (manuel kitap ekleme hala mevcut)
+
+- **CLI Menüsü**:
+  ```
+  [1] Add book manually (Stage 1 style)
+  [2] Add book by ISBN from API (Stage 2 style)
+  [3] Remove
+  [4] List
+  [5] Find by ISBN
+  [0] Exit
+  ```
+
+## Stage 3: Planlanan Geliştirmeler
+
+- Daha fazla API entegrasyonu
+- Kullanıcı arayüzü iyileştirmeleri
+- Gelişmiş arama özellikleri
+- Performans optimizasyonları

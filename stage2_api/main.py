@@ -7,12 +7,31 @@ def prompt(msg: str) -> str:
     except EOFError:
         return ""
 
-def add_flow(lib: Library) -> None:
+def add_flow_legacy(lib: Library) -> None:
+    """Stage 1 style: Manual entry of all book details."""
     title = prompt("Title: ")
-    author = prompt("Author: ")
+    authors_str = prompt("Author(s) (comma separated): ")
     isbn = prompt("ISBN: ")
-    ok = lib.add_book(Book(title=title, author=author, isbn=isbn))
+    
+    authors = [a.strip() for a in authors_str.split(",") if a.strip()]
+    if not authors:
+        authors = ["Unknown Author"]
+    
+    book = Book(isbn=isbn, title=title, authors=authors)
+    ok = lib.add_book(book)
     print("Added." if ok else "This ISBN already exists!")
+
+def add_flow_api(lib: Library) -> None:
+    """Stage 2 style: ISBN-based addition with API lookup."""
+    isbn = prompt("ISBN: ")
+    if not isbn:
+        print("ISBN cannot be empty.")
+        return
+    
+    book = lib.add_book(isbn)
+    if book:
+        print(f"Book successfully added: {book}")
+    # Error messages are already printed by lib.add_book
 
 def remove_flow(lib: Library) -> None:
     isbn = prompt("ISBN to remove: ")
@@ -37,19 +56,21 @@ def main() -> None:
     lib = Library(filename="library.json")
 
     menu = """
-[1] Add
-[2] Remove
-[3] List
-[4] Find by ISBN
+[1] Add book manually (Stage 1 style)
+[2] Add book by ISBN from API (Stage 2 style)
+[3] Remove
+[4] List
+[5] Find by ISBN
 [0] Exit
 """
     while True:
         print(menu)
         c = prompt("Choose: ")
-        if c == "1": add_flow(lib)
-        elif c == "2": remove_flow(lib)
-        elif c == "3": list_flow(lib)
-        elif c == "4": search_flow(lib)
+        if c == "1": add_flow_legacy(lib)
+        elif c == "2": add_flow_api(lib)
+        elif c == "3": remove_flow(lib)
+        elif c == "4": list_flow(lib)
+        elif c == "5": search_flow(lib)
         elif c == "0": break
         else: print("Invalid.")
 

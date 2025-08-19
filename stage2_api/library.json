@@ -1,14 +1,56 @@
 [
   {
-    "title": "hebele",
-    "author": "rıfat",
     "isbn": "123321",
+    "title": "hebele",
+    "authors": [
+      "rıfat"
+    ],
+    "author": "rıfat",
     "is_borrowed": false
   },
   {
-    "title": "birikiüç",
-    "author": "123",
     "isbn": "123",
+    "title": "birikiüç",
+    "authors": [
+      "123"
+    ],
+    "author": "123",
+    "is_borrowed": false
+  },
+  {
+    "isbn": "194313",
+    "title": "benbiresegim",
+    "authors": [
+      "ben"
+    ],
+    "author": "ben",
+    "is_borrowed": false
+  },
+  {
+    "isbn": "9757501956",
+    "title": "Harry Potter Büyülü Taş",
+    "authors": [
+      "J. K. Rowling"
+    ],
+    "author": "J. K. Rowling",
+    "is_borrowed": false
+  },
+  {
+    "isbn": "9754589038",
+    "title": "Suç Ve Ceza",
+    "authors": [
+      "Фёдор Михайлович Достоевский"
+    ],
+    "author": "Фёдор Михайлович Достоевский",
+    "is_borrowed": false
+  },
+  {
+    "isbn": "6056785955",
+    "title": "Leyla ile Mecnun",
+    "authors": [
+      "Burak Aksak"
+    ],
+    "author": "Burak Aksak",
     "is_borrowed": false
   }
 ]

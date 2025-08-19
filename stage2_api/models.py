@@ -1,15 +1,37 @@
 from dataclasses import dataclass
+from typing import List, Union
 
 @dataclass
 class Book:
-    title: str
-    author: str
     isbn: str  # benzersiz kimlik
+    title: str
+    authors: List[str]  # API'den gelen yazar listesi
     is_borrowed: bool = False  # Stage 1'de şart değil ama dursun (ileriye dönük)
+
+    def __init__(self, isbn: str, title: str, authors: Union[str, List[str]], is_borrowed: bool = False):
+        """
+        Stage 1 uyumluluğu için author (string) ve authors (list) destekler
+        """
+        self.isbn = isbn
+        self.title = title
+        self.is_borrowed = is_borrowed
+        
+        if isinstance(authors, str):
+            # Stage 1 uyumluluğu: tek string author
+            self.authors = [authors]
+        else:
+            # Stage 2: authors listesi
+            self.authors = authors if authors else []
+
+    @property
+    def author(self) -> str:
+        """Stage 1 uyumluluğu için author property"""
+        return self.authors[0] if self.authors else "Unknown Author"
 
     def __str__(self) -> str:
         # "Ulysses by James Joyce (ISBN: 978-0199535675)" formatı
-        return f"{self.title} by {self.author} (ISBN: {self.isbn})"
+        authors_str = ", ".join(self.authors) if self.authors else "Unknown Author"
+        return f"{self.title} by {authors_str} (ISBN: {self.isbn})"
 
     def borrow_book(self) -> None:
         if self.is_borrowed:
