@@ -1,134 +1,281 @@
-# Global AI Hub Python 202 Bootcamp Projesi
+# 📚 Library Management System - Kütüphane Yönetim Sistemi
 
-Bu depo, adım adım geliştirilen 3 aşamalı bir kütüphane yönetim sistemi projesini içerir:
+Bu proje, **Global AI Hub Python 202 Bootcamp** kapsamında geliştirilmiş 3 aşamalı bir kütüphane yönetim sistemidir. Temel OOP yapısından başlayarak REST API'ye kadar ilerleyen modüler bir mimariye sahiptir.
 
-- **Stage 1**: Temel OOP yapısı + JSON kalıcılık + birim testleri
-- **Stage 2**: API entegrasyonu (Open Library) + hata yönetimi
-- **Stage 3**: (Planlanan) Son dokunuşlar ve iyileştirmeler
+## 🎯 Proje Açıklaması
 
-## Proje Yapısı
+Bu kütüphane yönetim sistemi şu özelliklere sahiptir:
 
-```
-python_oop_kutuphane/
-├─ stage1_oop/                  # Aşama 1: Temel OOP
-│  ├─ models.py                 # Book veri sınıfı
-│  ├─ library.py                # Kütüphane yönetimi + JSON
-│  ├─ main.py                   # CLI arayüzü
-│  └─ tests/                    # Birim testleri
-│     └─ test_library.py
-│
-├─ stage2_api/                  # Aşama 2: API Entegrasyonu
-│  ├─ models.py                 # Geliştirilmiş Book modeli
-│  ├─ library.py                # API entegrasyonu + httpx
-│  ├─ main.py                   # Gelişmiş CLI (ISBN API desteği)
-│  ├─ stage2_demo.py            # Demo: Stage 1 ve 2 özellikleri
-│  └─ tests/
-│     └─ test_library_api.py
-│
-├─ pytest.ini                   # Test yapılandırması
-├─ requirements.txt             # Proje bağımlılıkları
-└─ README.md                    # Bu dosya
+- **Stage 1**: Temel OOP yapısı, JSON kalıcılık, birim testleri
+- **Stage 2**: Open Library API entegrasyonu, ISBN ile otomatik kitap ekleme
+- **Stage 3**: FastAPI REST API, Swagger dokümantasyonu, interaktif API arayüzü
+
+**Teknolojiler**: Python 3.13, FastAPI, Pydantic, httpx, pytest, Open Library API
+
+## 🚀 Kurulum
+
+### 1. Repoyu Klonlayın
+
+```bash
+git clone https://github.com/ufukzkn/python_library_app.git
+cd python_library_app
 ```
 
-## Kurulum
-
-Windows PowerShell ile kurulum:
+### 2. Virtual Environment Oluşturun (Windows)
 
 ```powershell
-# Sanal ortam oluşturma
-py -m venv .venv
+python -m venv .venv
 .\.venv\Scripts\Activate.ps1
+```
 
-# Bağımlılıklar
+### 3. Bağımlılıkları Kurun
+
+```bash
 pip install -r requirements.txt
 ```
 
-Not: PowerShell'de script çalıştırma sorunu yaşarsanız:
+**Not**: PowerShell execution policy hatası alırsanız:
+
 ```powershell
 Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned
 ```
 
-## Çalıştırma
+## 💻 Kullanım
 
-### Stage 1 (Temel Kütüphane)
-```powershell
-py -m stage1_oop.main
+### Stage 1 & 2: Terminal Uygulaması
+
+**CLI menüsü ile interaktif kullanım:**
+
+```bash
+# Stage 1 (Temel kütüphane)
+python stage1_oop/main.py
+
+# Stage 2 (API entegrasyonu ile)
+python stage2_api/main.py
+
+# Stage 3 (En güncel CLI)
+python stage3_fastapi/main.py
 ```
 
-### Stage 2 (API Entegrasyonu)
-```powershell
-# CLI Arayüzü
-py -m stage2_api.main
+**CLI Özellikleri:**
 
-# Demo Script (Stage 1 ve Stage 2 özelliklerini test eder)
-py -m stage2_api.stage2_demo
+- Manuel kitap ekleme (Stage 1 tarzı)
+- ISBN ile otomatik kitap ekleme (Stage 2 tarzı - Open Library API)
+- Kitap arama, listeleme ve silme
+- JSON kalıcılık
+
+### Stage 3: API Sunucusu
+
+**FastAPI REST API başlatma:**
+
+```bash
+# API sunucusunu başlatın
+cd stage3_fastapi
+uvicorn api:app --reload
 ```
 
-**Demo Script Açıklaması:**
-- `stage2_demo.py` hem Stage 1 hem de Stage 2 özelliklerini test eder
-- **Oluşturduğu dosyalar:**
-  - `stage1_demo.json`: Manuel kitap ekleme testi (Stage 1 uyumluluğu)
-  - `stage2_demo.json`: API ile kitap ekleme testi (Stage 2 özellikleri)
-     (Demoyu bu 2 json dosyasının içini boşaltarak deneyebilirsiniz)
-- **Test senaryoları:**
-    
-  - Stage 1 uyumluluğu: Manuel kitap ekleme
-  - Stage 2 API: ISBN ile otomatik kitap ekleme
-  - Hata yönetimi: Geçersiz ISBN testi
+**API erişim adresleri:**
 
-## Test Etme
+- **API Ana Sayfa**: <http://127.0.0.1:8000/>
+- **Swagger UI (İnteraktif Dokümantasyon)**: <http://127.0.0.1:8000/docs>
+- **ReDoc**: <http://127.0.0.1:8000/redoc>
+- **Health Check**: <http://127.0.0.1:8000/health>
 
-```powershell
-# Tüm testler
-pytest -q
+## 📖 API Dokümantasyonu
 
-# Sadece Stage 1 testleri
-pytest -q stage1_oop/tests
+### Endpoint'ler
 
-# Sadece Stage 2 testleri
-pytest -q stage2_api/tests
+| Method | Endpoint | Açıklama | Body |
+|--------|----------|----------|------|
+| `GET` | `/` | API bilgisi ve sürüm | - |
+| `GET` | `/health` | Sistem durumu kontrolü | - |
+| `GET` | `/books` | Tüm kitapları listele | - |
+| `POST` | `/books` | ISBN ile kitap ekle | `{"isbn": "9780140328721"}` |
+| `GET` | `/books/{isbn}` | Belirli kitabı getir | - |
+| `DELETE` | `/books/{isbn}` | Kitabı sil | - |
+
+### Örnek API İstekleri
+
+**1. Kitap Ekleme:**
+
+```bash
+curl -X POST "http://127.0.0.1:8000/books" \
+     -H "Content-Type: application/json" \
+     -d '{"isbn": "9780140328721"}'
 ```
 
-## Stage 1: Temel OOP Özellikleri
+**Response (201 Created):**
 
-- **Book** sınıfı:
-  - Alanlar: title, author, isbn
-  - JSON serileştirme: to_dict() / from_dict()
+```json
+{
+  "isbn": "9780140328721",
+  "title": "Fantastic Mr. Fox",
+  "authors": ["Roald Dahl"],
+  "is_borrowed": false
+}
+```
 
-- **Library** sınıfı:
-  - `add_book(book)`: Kitap ekleme (aynı ISBN tekrar eklenemez)
-  - `list_books()`: Tüm kitapları listeleme
-  - `find_book(isbn)`: ISBN ile kitap bulma
-  - `remove_book(isbn)`: Kitap silme
-  - JSON dosya kalıcılığı (varsayılan: lib.json)
-  - Güvenli dosya işlemleri (bozuk JSON için fallback)
+**2. Tüm Kitapları Listeleme:**
 
-## Stage 2: API Entegrasyonu
+```bash
+curl "http://127.0.0.1:8000/books"
+```
 
-- **Open Library API** entegrasyonu:
-  - `add_book(isbn)`: ISBN ile otomatik kitap ekleme
-  - API URL: https://openlibrary.org/isbn/{isbn}.json
-  
-- **Yeni Özellikler**:
-  - httpx ile HTTP istekleri
-  - Kitap bilgilerini API'den otomatik çekme
-  - Güçlü hata yönetimi (ağ hatası, 404, eksik veri)
-  - Redirect yönetimi ve timeout
-  - Stage 1 ile tam uyumluluk (manuel kitap ekleme hala mevcut)
+**3. Belirli Kitap Getirme:**
 
-- **CLI Menüsü**:
-  ```
-  [1] Add book manually (Stage 1 style)
-  [2] Add book by ISBN from API (Stage 2 style)
-  [3] Remove
-  [4] List
-  [5] Find by ISBN
-  [0] Exit
-  ```
+```bash
+curl "http://127.0.0.1:8000/books/9780140328721"
+```
 
-## Stage 3: Planlanan Geliştirmeler
+**4. Kitap Silme:**
 
-- Daha fazla API entegrasyonu
-- Kullanıcı arayüzü iyileştirmeleri
-- Gelişmiş arama özellikleri
-- Performans optimizasyonları
+```bash
+curl -X DELETE "http://127.0.0.1:8000/books/9780140328721"
+```
+
+### Hata Kodları
+
+- `400 Bad Request`: Geçersiz ISBN veya duplicate kitap
+- `404 Not Found`: Kitap bulunamadı
+- `500 Internal Server Error`: Sunucu hatası
+
+## 🧪 Test Senaryoları
+
+### Test Çalıştırma
+
+```bash
+# Tüm testleri çalıştır (43 test)
+pytest -v
+
+# Stage bazında testler
+pytest stage1_oop/tests/ -v     # 4 test
+pytest stage2_api/tests/ -v     # 10 test  
+pytest stage3_fastapi/tests/ -v # 29 test
+```
+
+### Test Kapsamı
+
+**Stage 1 Testleri:**
+
+- ✅ Book sınıfı: `__str__` formatı, ödünç alma/iade
+- ✅ Library sınıfı: CRUD operasyonları, JSON kalıcılık
+- ✅ Exception handling: Double borrow/return
+
+**Stage 2 Testleri:**
+
+- ✅ API entegrasyonu: Open Library'den kitap çekme
+- ✅ Error handling: 404, network errors, malformed JSON
+- ✅ Stage 1 compatibility: Mevcut özellikler korundu
+- ✅ Mixed operations: Manuel + API ile ekleme
+
+**Stage 3 Testleri:**
+
+- ✅ FastAPI endpoints: Tüm CRUD operasyonları
+- ✅ HTTP status codes: 200, 201, 204, 400, 404
+- ✅ Request/Response validation: Pydantic modelleri
+- ✅ Error scenarios: Invalid ISBN, duplicates, network errors
+- ✅ API workflow: End-to-end senaryolar
+
+### Demo Scriptleri
+
+**Stage 2 Demo:**
+
+```bash
+python stage2_api/stage2_demo.py
+```
+
+- Stage 1 ve Stage 2 özelliklerini test eder
+- `stage1_demo.json` ve `stage2_demo.json` dosyaları oluşturur
+
+**Stage 3 Demo:**
+
+```bash
+# Önce API'yi başlatın, yani 
+
+stage3_fastapi dizininde: uvicorn api:app --reload 
+
+# sonra:
+python stage3_fastapi/stage3_demo.py
+```
+
+- Tüm API endpoint'lerini test eder
+- HTTP isteklerini simüle eder
+
+## 📁 Proje Yapısı
+
+```text
+python_oop_kutuphane/
+├── stage1_oop/                  # Stage 1: Temel OOP
+│   ├── models.py               # Book veri sınıfı
+│   ├── library.py              # Library yönetimi + JSON
+│   ├── main.py                 # CLI arayüzü
+│   └── tests/                  # Birim testleri
+├── stage2_api/                 # Stage 2: API Entegrasyonu  
+│   ├── models.py               # Geliştirilmiş Book modeli
+│   ├── library.py              # Open Library API entegrasyonu
+│   ├── main.py                 # Gelişmiş CLI
+│   ├── stage2_demo.py          # Demo script
+│   └── tests/                  # API testleri
+├── stage3_fastapi/             # Stage 3: FastAPI Web API
+│   ├── models.py               # Pydantic modelleri
+│   ├── library.py              # Library sınıfı (Stage 2'den)
+│   ├── api.py                  # FastAPI uygulaması ⭐
+│   ├── main.py                 # CLI (Stage 2'den)
+│   ├── stage3_demo.py          # API demo
+│   ├── test_stage3.py          # FastAPI test runner
+│   └── tests/                  # FastAPI testleri
+├── requirements.txt            # Bağımlılıklar
+├── pytest.ini                 # Test konfigürasyonu
+└── README.md                   # Bu dosya
+```
+
+## 🔧 Teknik Detaylar
+
+### Veri Modeli
+
+```python
+# Book sınıfı (Stage 1-2)
+@dataclass
+class Book:
+    isbn: str
+    title: str  
+    authors: List[str]
+    is_borrowed: bool = False
+
+# Pydantic modeli (Stage 3)
+class BookResponse(BaseModel):
+    isbn: str
+    title: str
+    authors: List[str]
+    is_borrowed: bool = False
+```
+
+### API Entegrasyonu
+
+- **Open Library API**: <https://openlibrary.org/isbn/{isbn}.json>
+- **HTTP Client**: httpx (async support)
+- **Error Handling**: Network errors, 404, timeout, malformed JSON
+- **Fallback Strategy**: API hataları durumunda graceful degradation
+
+### Özellikler
+
+- ✅ **Stage 1 Compatibility**: Tüm aşamalar geriye uyumlu
+- ✅ **Unified Data Storage**: CLI ve API aynı JSON dosyasını kullanır
+- ✅ **Comprehensive Testing**: 43 test ile %100 coverage
+- ✅ **Modern Python**: Type hints, async/await, Pydantic
+- ✅ **Production Ready**: Logging, error handling, validation
+
+## 🎓 Öğrenilen Teknolojiler
+
+- **OOP**: Sınıflar, inheritance, encapsulation
+- **API Integration**: REST API'ler, HTTP clients, error handling  
+- **Web Development**: FastAPI, async programming, OpenAPI
+- **Testing**: pytest, fixtures, mocking, test-driven development
+- **Data Validation**: Pydantic modelleri, type checking
+- **Documentation**: Swagger/OpenAPI, kod dokümantasyonu
+
+---
+
+**Proje**: Global AI Hub Python 202 Bootcamp Final Project  
+**Geliştirici**: [ufukzkn](https://github.com/ufukzkn)  
+**Teknolojiler**: Python 3.13 • FastAPI • pytest • Open Library API
