@@ -1,0 +1,27 @@
+[
+  {
+    "isbn": "9780140328721",
+    "title": "Fantastic Mr. Fox",
+    "authors": [
+      "Roald Dahl"
+    ],
+    "author": "Roald Dahl",
+    "is_borrowed": false
+  },
+  {
+    "isbn": "9780747532699",
+    "title": "Harry Potter and the Philosopher's Stone",
+    "authors": [],
+    "author": "Unknown Author",
+    "is_borrowed": false
+  },
+  {
+    "isbn": "9780345339683",
+    "title": "The Hobbit",
+    "authors": [
+      "J.R.R. Tolkien"
+    ],
+    "author": "J.R.R. Tolkien",
+    "is_borrowed": false
+  }
+]
