@@ -10,6 +10,8 @@ Bu kütüphane yönetim sistemi şu özelliklere sahiptir:
 - **Stage 2**: Open Library API entegrasyonu, ISBN ile otomatik kitap ekleme
 - **Stage 3**: FastAPI REST API, Swagger dokümantasyonu, interaktif API arayüzü
 
+Her stage kendi başına bir Python **package** olarak yapılandırılmıştır.
+
 **Teknolojiler**: Python 3.13, FastAPI, Pydantic, httpx, pytest, Open Library API
 
 ## 🚀 Kurulum
@@ -42,19 +44,23 @@ Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned
 
 ## 💻 Kullanım
 
+**ÖNEMLİ NOT:**  
+> Bu projede tüm stage'ler birer Python package olarak yapılandırılmıştır.  
+> **Kök dizinde** main.py'leri çalıştırmak için -m eki aşağıdaki gibi kullanılmalıdır.
+
 ### Stage 1 & 2: Terminal Uygulaması
 
 **CLI menüsü ile interaktif kullanım:**
 
 ```bash
 # Stage 1 (Temel kütüphane)
-python stage1_oop/main.py
+python -m stage1_oop.main
 
 # Stage 2 (API entegrasyonu ile)
-python stage2_api/main.py
+python -m stage2_api.main
 
 # Stage 3 (En güncel CLI)
-python stage3_fastapi/main.py
+python -m stage3_fastapi.main
 ```
 
 **CLI Özellikleri:**
@@ -181,7 +187,7 @@ pytest stage3_fastapi/tests/ -v # 29 test
 **Stage 2 Demo:**
 
 ```bash
-python stage2_api/stage2_demo.py
+python python -m stage2_api.stage2_demo
 ```
 
 - Stage 1 ve Stage 2 özelliklerini test eder
@@ -192,10 +198,10 @@ python stage2_api/stage2_demo.py
 ```bash
 # Önce API'yi başlatın, yani 
 
-stage3_fastapi dizininde: uvicorn api:app --reload 
+uvicorn stage3_fastapi.api:app --reload 
 
 # sonra:
-python stage3_fastapi/stage3_demo.py
+python -m stage3_fastapi.stage3_demo
 ```
 
 - Tüm API endpoint'lerini test eder
