@@ -4,9 +4,11 @@ Kütüphane yönetim sistemi için REST API
 """
 
 from fastapi import FastAPI, HTTPException, status
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, HTMLResponse
+from fastapi.staticfiles import StaticFiles
 from typing import List
 import logging
+import os
 
 from stage3_fastapi.library import Library
 from stage3_fastapi.models import ISBNRequest, BookResponse, ErrorResponse
@@ -27,6 +29,14 @@ app = FastAPI(
 # Global library instance
 library = Library("library.json")  # library_api.json yerine
 
+# Create static directory if it doesn't exist
+static_dir = os.path.join(os.path.dirname(__file__), "static")
+if not os.path.exists(static_dir):
+    os.makedirs(static_dir)
+
+# Mount static files
+app.mount("/static", StaticFiles(directory=static_dir), name="static")
+
 @app.get("/", tags=["Root"])
 async def root():
     """API ana sayfa"""
@@ -35,8 +45,22 @@ async def root():
         "version": "3.0.0",
         "features": ["Open Library Integration", "ISBN-based book addition", "Full CRUD operations"],
         "docs": "/docs",
-        "redoc": "/redoc"
+        "redoc": "/redoc",
+        "web_interface": "/web"
     }
+
+@app.get("/web", response_class=HTMLResponse, tags=["Web Interface"])
+async def web_interface():
+    """Web arayüzü ana sayfa"""
+    html_file = os.path.join(static_dir, "index.html")
+    if os.path.exists(html_file):
+        with open(html_file, "r", encoding="utf-8") as f:
+            return HTMLResponse(content=f.read(), status_code=200)
+    else:
+        return HTMLResponse(
+            content="<h1>Web Interface</h1><p>HTML dosyası bulunamadı. Lütfen static/index.html dosyasını oluşturun.</p>",
+            status_code=200
+        )
 
 @app.get("/books", response_model=List[BookResponse], tags=["Books"])
 async def list_books():
