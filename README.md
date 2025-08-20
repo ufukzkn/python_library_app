@@ -33,7 +33,7 @@ python -m venv .venv
 ### 3. Bağımlılıkları Kurun
 
 ```bash
-pip install -r requirements.txt
+uv pip install -r requirements.txt
 ```
 
 **Not**: PowerShell execution policy hatası alırsanız:
