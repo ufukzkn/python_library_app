@@ -2,7 +2,7 @@ from __future__ import annotations
 from pathlib import Path
 import json
 from typing import Any, Iterable, Optional
-from .models import Book
+from models import Book
 
 class Library:
     def __init__(self, filename: str = "library.json") -> None:

@@ -1,5 +1,5 @@
-from .library import Library
-from .models import Book
+from library import Library
+from models import Book
 
 def prompt(msg: str) -> str:
     try:
