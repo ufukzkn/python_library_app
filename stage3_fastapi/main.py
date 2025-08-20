@@ -1,5 +1,5 @@
-from library import Library
-from models import Book
+from stage3_fastapi.library import Library
+from stage3_fastapi.models import Book
 
 def prompt(msg: str) -> str:
     try:

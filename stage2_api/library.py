@@ -3,7 +3,7 @@ from pathlib import Path
 import json
 import httpx
 from typing import Any, Iterable, Optional, List
-from models import Book
+from stage2_api.models import Book
 
 class Library:
     def __init__(self, filename: str = "library.json") -> None:

@@ -1,5 +1,5 @@
-from library import Library
-from models import Book
+from stage1_oop.library import Library
+from stage1_oop.models import Book
 
 def prompt(msg: str) -> str:
     try:

@@ -8,8 +8,8 @@ from fastapi.responses import JSONResponse
 from typing import List
 import logging
 
-from library import Library
-from models import ISBNRequest, BookResponse, ErrorResponse
+from stage3_fastapi.library import Library
+from stage3_fastapi.models import ISBNRequest, BookResponse, ErrorResponse
 
 # Logging configuration
 logging.basicConfig(level=logging.INFO)
