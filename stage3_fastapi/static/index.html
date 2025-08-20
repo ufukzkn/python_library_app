@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kütüphane Yönetim Sistemi</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1><i class="fas fa-book"></i> Kütüphane Yönetim Sistemi</h1>
+            <p class="subtitle">Stage 3: FastAPI Web Arayüzü</p>
+        </header>
+
+        <nav class="nav-tabs">
+            <button class="tab-button active" onclick="showTab('books')" data-tab="books">
+                <i class="fas fa-list"></i> Kitaplar
+            </button>
+            <button class="tab-button" onclick="showTab('add')" data-tab="add">
+                <i class="fas fa-plus"></i> Kitap Ekle
+            </button>
+            <button class="tab-button" onclick="showTab('search')" data-tab="search">
+                <i class="fas fa-search"></i> Ara
+            </button>
+            <button class="tab-button" onclick="showTab('about')" data-tab="about">
+                <i class="fas fa-info-circle"></i> Hakkında
+            </button>
+        </nav>
+
+        <!-- Books Tab -->
+        <div id="books-tab" class="tab-content active">
+            <div class="section-header">
+                <h2><i class="fas fa-books"></i> Kitap Listesi</h2>
+                <button onclick="loadBooks()" class="btn btn-secondary">
+                    <i class="fas fa-refresh"></i> Yenile
+                </button>
+            </div>
+            
+            <div id="loading" class="loading hidden">
+                <i class="fas fa-spinner fa-spin"></i> Yükleniyor...
+            </div>
+            
+            <div id="books-container">
+                <div class="books-grid" id="books-grid">
+                    <!-- Books will be loaded here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Add Book Tab -->
+        <div id="add-tab" class="tab-content">
+            <div class="section-header">
+                <h2><i class="fas fa-plus-circle"></i> Yeni Kitap Ekle</h2>
+            </div>
+            
+            <div class="form-container">
+                <form id="add-book-form" class="add-form">
+                    <div class="form-group">
+                        <label for="isbn-input">
+                            <i class="fas fa-barcode"></i> ISBN:
+                        </label>
+                        <input 
+                            type="text" 
+                            id="isbn-input" 
+                            placeholder="Örn: 9780140328721" 
+                            required
+                            minlength="10"
+                            maxlength="17"
+                        >
+                        <small class="help-text">
+                            Open Library'den otomatik bilgi çekilecek
+                        </small>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-plus"></i> Kitap Ekle
+                    </button>
+                </form>
+                
+                <div id="add-result" class="result-message hidden"></div>
+            </div>
+        </div>
+
+        <!-- Search Tab -->
+        <div id="search-tab" class="tab-content">
+            <div class="section-header">
+                <h2><i class="fas fa-search"></i> Kitap Ara</h2>
+            </div>
+            
+            <div class="form-container">
+                <form id="search-form" class="search-form">
+                    <div class="form-group">
+                        <label for="search-isbn">
+                            <i class="fas fa-barcode"></i> ISBN ile Ara:
+                        </label>
+                        <input 
+                            type="text" 
+                            id="search-isbn" 
+                            placeholder="ISBN girin"
+                        >
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-search"></i> Ara
+                    </button>
+                </form>
+                
+                <div id="search-result" class="search-result hidden"></div>
+            </div>
+        </div>
+
+        <!-- About Tab -->
+        <div id="about-tab" class="tab-content">
+            <div class="section-header">
+                <h2><i class="fas fa-info-circle"></i> Hakkında</h2>
+            </div>
+            
+            <div class="about-content">
+                <div class="info-card">
+                    <h3><i class="fas fa-code"></i> Teknolojiler</h3>
+                    <ul>
+                        <li><strong>Backend:</strong> Python 3, FastAPI, Pydantic</li>
+                        <li><strong>Frontend:</strong> HTML5, CSS3, Vanilla JavaScript</li>
+                        <li><strong>API Integration:</strong> Open Library API</li>
+                        <li><strong>Veri Depolama:</strong> JSON dosyası</li>
+                    </ul>
+                </div>
+                
+                <div class="info-card">
+                    <h3><i class="fas fa-features"></i> Özellikler</h3>
+                    <ul>
+                        <li>ISBN ile otomatik kitap ekleme</li>
+                        <li>Kitap listeleme ve arama</li>
+                        <li>Kitap silme işlemleri</li>
+                        <li>Modern, responsive tasarım</li>
+                        <li>REST API dokümantasyonu</li>
+                    </ul>
+                </div>
+                
+                <div class="info-card">
+                    <h3><i class="fas fa-link"></i> API Bağlantıları</h3>
+                    <div class="api-links">
+                        <a href="/docs" target="_blank" class="api-link">
+                            <i class="fas fa-book-open"></i> Swagger UI
+                        </a>
+                        <a href="/redoc" target="_blank" class="api-link">
+                            <i class="fas fa-file-alt"></i> ReDoc
+                        </a>
+                        <a href="/health" target="_blank" class="api-link">
+                            <i class="fas fa-heartbeat"></i> Health Check
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Toast Messages -->
+        <div id="toast-container" class="toast-container"></div>
+    </div>
+
+    <script src="/static/script.js"></script>
+</body>
+</html>

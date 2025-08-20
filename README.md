@@ -76,10 +76,44 @@ uvicorn api:app --reload
 
 **API erişim adresleri:**
 
+- **Web Arayüzü (YENİ)**: <http://127.0.0.1:8000/web> 🌟
 - **API Ana Sayfa**: <http://127.0.0.1:8000/>
 - **Swagger UI (İnteraktif Dokümantasyon)**: <http://127.0.0.1:8000/docs>
 - **ReDoc**: <http://127.0.0.1:8000/redoc>
 - **Health Check**: <http://127.0.0.1:8000/health>
+
+## 🌐 Web Arayüzü
+
+**Modern HTML/CSS/JavaScript Web Interface** - <http://127.0.0.1:8000/web>
+
+Stage 3 artık modern, kullanıcı dostu bir web arayüzü ile birlikte geliyor! 
+
+### ✨ Web Arayüzü Özellikleri
+
+- **📚 Kitap Listesi**: Tüm kitapları modern kart görünümünde listele
+- **➕ Kitap Ekleme**: ISBN ile otomatik kitap ekleme (Open Library entegrasyonu)
+- **🔍 Kitap Arama**: ISBN ile hızlı kitap arama
+- **👁️ Detay Görünümü**: Modal pencerede kitap detayları
+- **🗑️ Kitap Silme**: Onay ile güvenli kitap silme
+- **📱 Responsive Tasarım**: Mobil ve masaüstü uyumlu
+- **🎨 Modern UI**: Gradient arka plan, animasyonlar, toast mesajları
+- **⚡ Real-time Updates**: Canlı veri güncellemeleri
+
+### 🎯 Web Arayüzü Kullanımı
+
+1. **API Sunucusunu Başlatın**:
+   ```bash
+   cd stage3_fastapi
+   uvicorn api:app --reload
+   ```
+
+2. **Web Arayüzüne Erişin**: <http://127.0.0.1:8000/web>
+
+3. **Sekmeler arası geçiş yapın**:
+   - 📚 **Kitaplar**: Mevcut kitapları görüntüle, detayları incele, sil
+   - ➕ **Kitap Ekle**: ISBN girerek yeni kitap ekle
+   - 🔍 **Ara**: ISBN ile kitap ara
+   - ℹ️ **Hakkında**: Teknoloji bilgileri ve API linkler
 
 ## 📖 API Dokümantasyonu
 
@@ -88,6 +122,7 @@ uvicorn api:app --reload
 | Method | Endpoint | Açıklama | Body |
 |--------|----------|----------|------|
 | `GET` | `/` | API bilgisi ve sürüm | - |
+| `GET` | `/web` | Web arayüzü ana sayfa | - |
 | `GET` | `/health` | Sistem durumu kontrolü | - |
 | `GET` | `/books` | Tüm kitapları listele | - |
 | `POST` | `/books` | ISBN ile kitap ekle | `{"isbn": "9780140328721"}` |
@@ -223,6 +258,10 @@ python_oop_kutuphane/
 │   ├── main.py                 # CLI (Stage 2'den)
 │   ├── stage3_demo.py          # API demo
 │   ├── test_stage3.py          # FastAPI test runner
+│   ├── static/                 # Web arayüzü dosyaları 🌟
+│   │   ├── index.html          # Ana HTML sayfa
+│   │   ├── style.css           # CSS stil dosyası
+│   │   └── script.js           # JavaScript fonksiyonları
 │   └── tests/                  # FastAPI testleri
 ├── requirements.txt            # Bağımlılıklar
 ├── pytest.ini                 # Test konfigürasyonu
