@@ -187,7 +187,7 @@ pytest stage3_fastapi/tests/ -v # 29 test
 **Stage 2 Demo:**
 
 ```bash
-python python -m stage2_api.stage2_demo
+python -m stage2_api.stage2_demo
 ```
 
 - Stage 1 ve Stage 2 özelliklerini test eder
