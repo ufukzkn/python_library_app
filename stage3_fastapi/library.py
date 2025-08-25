@@ -16,6 +16,11 @@ class Library:
     def _db_path(self) -> Path:
         return Path(__file__).with_name(self.filename)
 
+    @property
+    def books(self) -> list[Book]:
+        """Public access to books list (for API compatibility)"""
+        return self._books
+
     def load_books(self) -> None:
         """library.json dosyasından kitapları yükler."""
         path = self._db_path
@@ -38,26 +43,57 @@ class Library:
             else:
                 authors = []
             
-            book = Book(
-                isbn=row.get("isbn", ""),
-                title=row.get("title", ""),
-                authors=authors,
-                is_borrowed=row.get("is_borrowed", False),
-            )
+            # Book type ve ek alanları hazırla
+            book_kwargs = {
+                'isbn': row.get("isbn", ""),
+                'title': row.get("title", ""),
+                'authors': authors,
+                'is_borrowed': row.get("is_borrowed", False),
+                'book_type': row.get("book_type", "Physical"),
+            }
+            
+            # Optional fields - varsa ekle
+            if "shelf_location" in row:
+                book_kwargs['shelf_location'] = row["shelf_location"]
+            if "file_size_mb" in row:
+                book_kwargs['file_size_mb'] = row["file_size_mb"]
+            if "file_format" in row:
+                book_kwargs['file_format'] = row["file_format"]
+            if "duration_minutes" in row:
+                book_kwargs['duration_minutes'] = row["duration_minutes"]
+            if "narrator" in row:
+                book_kwargs['narrator'] = row["narrator"]
+            
+            book = Book(**book_kwargs)
             self._books.append(book)
 
     def save_books(self) -> None:
         """Mevcut kitap listesini JSON'a yazar."""
-        rows: list[dict[str, Any]] = [
-            {
+        rows: list[dict[str, Any]] = []
+        for b in self._books:
+            row = {
                 "isbn": b.isbn,
                 "title": b.title,
                 "authors": b.authors,
                 "author": b.author,  # Stage 1 uyumluluğu için
                 "is_borrowed": b.is_borrowed,
+                "book_type": getattr(b, 'book_type', 'Physical'),
             }
-            for b in self._books
-        ]
+            
+            # Optional fields - sadece varsa ekle
+            if hasattr(b, 'shelf_location') and b.shelf_location:
+                row["shelf_location"] = b.shelf_location
+            if hasattr(b, 'file_size_mb') and b.file_size_mb:
+                row["file_size_mb"] = b.file_size_mb
+            if hasattr(b, 'file_format') and b.file_format:
+                row["file_format"] = b.file_format
+            if hasattr(b, 'duration_minutes') and b.duration_minutes:
+                row["duration_minutes"] = b.duration_minutes
+            if hasattr(b, 'narrator') and b.narrator:
+                row["narrator"] = b.narrator
+                
+            rows.append(row)
+            
         self._db_path.write_text(
             json.dumps(rows, ensure_ascii=False, indent=2),
             encoding="utf-8",
@@ -117,7 +153,7 @@ class Library:
             return None
 
     # ---------- Operasyonlar ----------
-    def add_book_by_isbn(self, isbn: str) -> Optional[Book]:
+    def add_book_by_isbn(self, isbn: str, book_type: str = "Physical", **extra_fields) -> Optional[Book]:
         """ISBN ile kitap ekler - API'den bilgileri çeker (Stage 2 özelliği)."""
         # Kitap zaten var mı kontrol et
         if any(b.isbn == isbn for b in self._books):
@@ -129,6 +165,14 @@ class Library:
         if book is None:
             print("Book not found.")
             return None
+        
+        # Book type'ı ayarla
+        book.book_type = book_type
+        
+        # Extra fields'i ayarla
+        for field, value in extra_fields.items():
+            if hasattr(book, field):
+                setattr(book, field, value)
         
         self._books.append(book)
         self.save_books()

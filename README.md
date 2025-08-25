@@ -76,13 +76,13 @@ python -m stage3_fastapi.main
 
 ```bash
 # API sunucusunu başlatın
-cd stage3_fastapi
-uvicorn api:app --reload
+uvicorn stage3_fastapi.api:app --reload 
 ```
 
 **API erişim adresleri:**
 
 - **API Ana Sayfa**: <http://127.0.0.1:8000/>
+- **Web Arayüzü**: <http://127.0.0.1:8000/static/index.html>
 - **Swagger UI (İnteraktif Dokümantasyon)**: <http://127.0.0.1:8000/docs>
 - **ReDoc**: <http://127.0.0.1:8000/redoc>
 - **Health Check**: <http://127.0.0.1:8000/health>
@@ -98,6 +98,7 @@ uvicorn api:app --reload
 | `GET` | `/books` | Tüm kitapları listele | - |
 | `POST` | `/books` | ISBN ile kitap ekle | `{"isbn": "9780140328721"}` |
 | `GET` | `/books/{isbn}` | Belirli kitabı getir | - |
+| `PUT` | `/books/{isbn}` | Kitap bilgilerini güncelle | `{"title": "Yeni Başlık", "authors": ["Yazar"], "is_borrowed": false}` |
 | `DELETE` | `/books/{isbn}` | Kitabı sil | - |
 
 ### Örnek API İstekleri
@@ -133,7 +134,15 @@ curl "http://127.0.0.1:8000/books"
 curl "http://127.0.0.1:8000/books/9780140328721"
 ```
 
-**4. Kitap Silme:**
+**4. Kitap Güncelleme:**
+
+```bash
+curl -X PUT "http://127.0.0.1:8000/books/9780140328721" \
+     -H "Content-Type: application/json" \
+     -d '{"title": "Fantastic Mr. Fox - Updated", "is_borrowed": true}'
+```
+
+**5. Kitap Silme:**
 
 ```bash
 curl -X DELETE "http://127.0.0.1:8000/books/9780140328721"
@@ -147,6 +156,103 @@ curl -X DELETE "http://127.0.0.1:8000/books/9780140328721"
 
 ## 🧪 Test Senaryoları
 
+## 🔄 Aşamaların Kısa Özeti ve Örnek Çıktılar
+
+### Stage 1: Konsol Tabanlı OOP Uygulaması
+
+Kitap ekleme, silme, arama ve listeleme. JSON dosyasında veri saklama.
+
+**Örnek Çıktı:**
+
+```shell
+[1] Add
+[2] Remove
+[3] List
+[4] Find by ISBN
+[0] Exit
+Choose: 1
+Title: Sapiens
+Author: Yuval Noah Harari
+ISBN: 9780062316097
+Added.
+
+[1] Add
+[2] Remove
+[3] List
+[4] Find by ISBN
+[0] Exit
+Choose: 3
+ 1. Sapiens by Yuval Noah Harari (ISBN: 9780062316097)
+```
+
+### Stage 2: Open Library API ile ISBN’den Kitap Ekleme
+
+Manuel ve otomatik ekleme birlikte kullanılabiliyor.
+
+**Örnek Çıktı:**
+
+```shell
+[1] Add book manually (Stage 1 style)
+[2] Add book by ISBN from API (Stage 2 style)
+[3] Remove
+[4] List
+[5] Find by ISBN
+[0] Exit
+Choose: 2
+ISBN: 9780140449136
+Book successfully added: The Odyssey by Homer (ISBN: 9780140449136)
+
+Choose: 4
+ 1. The Odyssey by Homer (ISBN: 9780140449136)
+```
+
+### Stage 3: FastAPI ile REST API
+
+Swagger/OpenAPI arayüzü, HTTP endpoint’leri, otomatik testler ve demo scriptleri.
+
+**Örnek API Çıktısı:**
+
+```http
+GET /health
+200 OK
+{
+  "status": "ok"
+}
+
+GET /books
+200 OK
+[
+  {
+    "isbn": "9780140449136",
+    "title": "The Odyssey",
+    "authors": ["Homer"]
+  }
+]
+```
+
+**Örnek Test Çıktısı:**
+
+```shell
+=== Stage 3 FastAPI Files Check ===
+✓ api.py found
+✓ models.py found
+✓ library.py found
+
+=== Import Test ===
+✓ Models imported successfully
+✓ Library imported successfully
+✓ FastAPI imported successfully
+✓ API app imported successfully
+✓ App type: <class 'fastapi.applications.FastAPI'>
+✓ App title: Library API
+
+=== FastAPI Manual Test ===
+✓ Root endpoint response: 200
+✓ Response data: {'message': 'Welcome to the Library API!'}
+✓ Health endpoint response: 200
+✓ Health data: {'status': 'ok'}
+```
+
 ### Test Çalıştırma
 
 ```bash
@@ -157,6 +263,51 @@ pytest -v
 pytest stage1_oop/tests/ -v     # 4 test
 pytest stage2_api/tests/ -v     # 10 test  
 pytest stage3_fastapi/tests/ -v # 29 test
+```
+
+### Stage 3 FastAPI Dosya ve Import Testi
+
+Stage 3 FastAPI package'ının dosya yapısı ve importlarının doğru olup olmadığını test etmek için aşağıdaki komutu kullanabilirsiniz:
+
+```powershell
+python -m stage3_fastapi.test_stage3
+```
+
+### Enhanced API ve Frontend Testi
+
+PUT endpoint, frontend dosyaları ve Docker konfigürasyonunu test etmek için:
+
+```powershell
+python -m stage3_fastapi.test_enhanced
+```
+veya
+```powershell
+python stage3_fastapi/test_enhanced.py
+```
+
+Bu komut, `test_stage3.py` dosyasını çalıştırır ve dosya varlığı, importlar ve temel endpointlerin manuel testini otomatik olarak gerçekleştirir. Özellikle modüler yapı ve import hatalarını debug etmek için idealdir.
+
+**Tipik Çıktı:**
+
+```shell
+=== Stage 3 FastAPI Files Check ===
+✓ api.py found
+✓ models.py found
+✓ library.py found
+
+=== Import Test ===
+✓ Models imported successfully
+✓ Library imported successfully
+✓ FastAPI imported successfully
+✓ API app imported successfully
+✓ App type: <class 'fastapi.applications.FastAPI'>
+✓ App title: Library API
+
+=== FastAPI Manual Test ===
+✓ Root endpoint response: 200
+✓ Response data: {'message': 'Welcome to the Library API!'}
+✓ Health endpoint response: 200
+✓ Health data: {'status': 'ok'}
 ```
 
 ### Test Kapsamı
@@ -279,9 +430,99 @@ class BookResponse(BaseModel):
 - **Testing**: pytest, fixtures, mocking, test-driven development
 - **Data Validation**: Pydantic modelleri, type checking
 - **Documentation**: Swagger/OpenAPI, kod dokümantasyonu
+- **Frontend Development**: HTML/CSS/JavaScript, API consumption
+- **Containerization**: Docker, docker-compose
+
+## 🐳 Docker ile Çalıştırma
+
+### Docker Build ve Run
+
+```bash
+# Docker image oluştur
+docker build -t library-api .
+
+# Container çalıştır
+docker run -d \
+  --name library-container \
+  -p 8000:8000 \
+  -v $(pwd)/data:/app/data \
+  library-api
+```
+
+### Docker Compose (Önerilen)
+
+```bash
+# Uygulamayı başlat
+docker-compose up -d
+
+# Logları görüntüle
+docker-compose logs -f
+
+# Durdur ve temizle
+docker-compose down
+```
+
+**Docker ile erişim adresleri:**
+- **Web Arayüzü**: <http://localhost:8000/static/index.html>
+- **API Docs**: <http://localhost:8000/docs>
+
+## 🚀 İleri Seviye Özellikler
+
+### ✅ Tamamlanmış Geliştirmeler
+
+- **🔄 PUT Endpoint**: Kitap güncelleme API'si
+- **🌐 Web Frontend**: Modern HTML/CSS/JS arayüzü
+- **🐳 Docker**: Container desteği ve docker-compose
+- **📱 Responsive**: Mobil uyumlu tasarım
+- **🔒 CORS**: Frontend-backend entegrasyonu
+- **⚡ Real-time**: Canlı veri güncellemeleri
+
+### 🎨 Stage 3+ Ek İyileştirmeler (Ağustos 2025)
+
+#### 📚 Kitap Tipleri ve Özel Alanlar
+
+- **🎧 Audio Book Desteği**: Narrator ve süre bilgileri
+- **💻 Digital Book Desteği**: Dosya boyutu ve format bilgileri  
+- **📖 Physical Book Desteği**: Raf konumu bilgileri
+- **🔄 Tip Değiştirme**: Kitap tipini edit ile değiştirme
+- **📊 Tip Bazlı İstatistikler**: Audio, Digital, Physical sayıları
+
+#### 🎨 Modern UI/UX İyileştirmeleri
+
+- **🌈 Gelişmiş Tasarım**: Gradient renkler, animasyonlar
+- **📊 Güzel İstatistikler**: Renkli kartlar, hover efektleri
+- **🔍 Gelişmiş Arama**: Kitap tipi filtresi, card görünümü
+- **✏️ Modal Edit**: Popup ile kitap düzenleme
+- **📄 Sayfalama**: Gelişmiş pagination, sayfa numarası seçimi
+
+#### 🛠️ İşlevsellik İyileştirmeleri
+
+- **📝 Manuel Ekleme**: Tüm kitap tiplerini destekler
+- **🔧 ISBN Ekleme**: Kitap tipi seçimi ile ekleme
+- **🔄 Borrow/Return**: Arama sonuçlarında da çalışır
+- **🎯 Filtreleme**: Tüm sayfalarda çalışan filtreler
+- **⚡ Canlı Güncelleme**: Anlık veri senkronizasyonu
+
+#### 🎯 API Geliştirmeleri
+
+- **📦 Genişletilmiş Model**: Tüm kitap tiplerini destekler
+- **🔄 PUT Endpoint**: Tüm alanları günceller
+- **✅ Validation**: Pydantic ile gelişmiş doğrulama
+- **📊 Response Model**: Zengin kitap verileri
+
+### 🔮 Gelecek Geliştirmeler
+
+- **🗄️ SQLite**: JSON yerine veritabanı desteği
+- **🔐 Authentication**: Kullanıcı girişi ve yetkilendirme
+- **📊 Analytics**: Kitap istatistikleri ve raporlar
+- **🔍 Advanced Search**: Gelişmiş arama filtreleri
+- **📤 Export/Import**: Veri dışa/içe aktarma
+- **🌐 Multi-language**: Çoklu dil desteği
 
 ---
 
 **Proje**: Global AI Hub Python 202 Bootcamp Final Project  
 **Geliştirici**: [ufukzkn](https://github.com/ufukzkn)  
 **Teknolojiler**: Python 3.13 • FastAPI • pytest • Open Library API
+
+---

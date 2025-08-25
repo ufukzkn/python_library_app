@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  library-api:
+    build: .
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./data:/app/data
+    environment:
+      - PYTHONPATH=/app
+      - LIBRARY_FILE=/app/data/library.json
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+volumes:
+  library-data:

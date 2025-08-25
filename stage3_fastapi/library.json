@@ -1,30 +1,23 @@
 [
   {
-    "isbn": "123321",
-    "title": "hebele",
-    "authors": [
-      "rıfat"
-    ],
-    "author": "rıfat",
-    "is_borrowed": false
-  },
-  {
     "isbn": "123",
     "title": "birikiüç",
     "authors": [
       "123"
     ],
     "author": "123",
-    "is_borrowed": false
+    "is_borrowed": false,
+    "book_type": "Physical"
   },
   {
     "isbn": "194313",
-    "title": "benbiresegim",
+    "title": "string",
     "authors": [
-      "ben"
+      "string"
     ],
-    "author": "ben",
-    "is_borrowed": false
+    "author": "string",
+    "is_borrowed": true,
+    "book_type": "Physical"
   },
   {
     "isbn": "9757501956",
@@ -33,7 +26,9 @@
       "J. K. Rowling"
     ],
     "author": "J. K. Rowling",
-    "is_borrowed": false
+    "is_borrowed": false,
+    "book_type": "Physical",
+    "shelf_location": "A1-001"
   },
   {
     "isbn": "9754589038",
@@ -42,7 +37,8 @@
       "Фёдор Михайлович Достоевский"
     ],
     "author": "Фёдор Михайлович Достоевский",
-    "is_borrowed": false
+    "is_borrowed": false,
+    "book_type": "Physical"
   },
   {
     "isbn": "6056785955",
@@ -51,16 +47,18 @@
       "Burak Aksak"
     ],
     "author": "Burak Aksak",
-    "is_borrowed": false
+    "is_borrowed": false,
+    "book_type": "Physical"
   },
   {
     "isbn": "0449143872",
-    "title": "Untamed Breed",
+    "title": "string",
     "authors": [
-      "Gordon D. Shirreffs"
+      "string"
     ],
-    "author": "Gordon D. Shirreffs",
-    "is_borrowed": false
+    "author": "string",
+    "is_borrowed": true,
+    "book_type": "Physical"
   },
   {
     "isbn": "3141134",
@@ -69,6 +67,171 @@
       "sgsfıg"
     ],
     "author": "sgsfıg",
-    "is_borrowed": false
+    "is_borrowed": false,
+    "book_type": "Physical"
+  },
+  {
+    "isbn": "9750741382",
+    "title": "Moby Dick",
+    "authors": [
+      "Herman Melville"
+    ],
+    "author": "Herman Melville",
+    "is_borrowed": true,
+    "book_type": "Physical"
+  },
+  {
+    "isbn": "0618343997",
+    "title": "The Lord of the Rings",
+    "authors": [],
+    "author": "Unknown Author",
+    "is_borrowed": true,
+    "book_type": "Physical"
+  },
+  {
+    "isbn": "9780140449136",
+    "title": "Crime and punishment",
+    "authors": [
+      "Фёдор Михайлович Достоевский"
+    ],
+    "author": "Фёдор Михайлович Достоевский",
+    "is_borrowed": true,
+    "book_type": "Physical"
+  },
+  {
+    "isbn": "6054629867",
+    "title": "Algernon'a Cicekler",
+    "authors": [
+      "Daniel Keyes"
+    ],
+    "author": "Daniel Keyes",
+    "is_borrowed": false,
+    "book_type": "Physical"
+  },
+  {
+    "isbn": "123123",
+    "title": "hebele",
+    "authors": [
+      "rifat"
+    ],
+    "author": "rifat",
+    "is_borrowed": true,
+    "book_type": "Digital",
+    "file_size_mb": 2.0,
+    "file_format": "TXT"
+  },
+  {
+    "isbn": "135252",
+    "title": "hebele124",
+    "authors": [
+      "rifat41"
+    ],
+    "author": "rifat41",
+    "is_borrowed": false,
+    "book_type": "Audio"
+  },
+  {
+    "isbn": "6053322520",
+    "title": "Sato",
+    "authors": [
+      "Franz Kafka"
+    ],
+    "author": "Franz Kafka",
+    "is_borrowed": false,
+    "book_type": "Physical",
+    "shelf_location": "a14",
+    "file_size_mb": 3.0,
+    "file_format": "PDF",
+    "duration_minutes": 444
+  },
+  {
+    "isbn": "1111111",
+    "title": "hebeleq123",
+    "authors": [
+      "ben"
+    ],
+    "author": "ben",
+    "is_borrowed": true,
+    "book_type": "Audio"
+  },
+  {
+    "isbn": "131",
+    "title": "hebele",
+    "authors": [
+      "af",
+      "bef"
+    ],
+    "author": "af",
+    "is_borrowed": false,
+    "book_type": "Audio"
+  },
+  {
+    "isbn": "1111111123",
+    "title": "asgd123",
+    "authors": [
+      "rifat"
+    ],
+    "author": "rifat",
+    "is_borrowed": true,
+    "book_type": "Audio",
+    "duration_minutes": 341,
+    "narrator": "be3122"
+  },
+  {
+    "isbn": "412",
+    "title": "hebele",
+    "authors": [
+      "rifat"
+    ],
+    "author": "rifat",
+    "is_borrowed": true,
+    "book_type": "Digital"
+  },
+  {
+    "isbn": "112",
+    "title": "hebeleaudi",
+    "authors": [
+      "audi1"
+    ],
+    "author": "audi1",
+    "is_borrowed": true,
+    "book_type": "Audio",
+    "duration_minutes": 123,
+    "narrator": "bebe"
+  },
+  {
+    "isbn": "113",
+    "title": "hebeledigi",
+    "authors": [
+      "digi1"
+    ],
+    "author": "digi1",
+    "is_borrowed": false,
+    "book_type": "Digital",
+    "file_size_mb": 2.0,
+    "file_format": "PDF"
+  },
+  {
+    "isbn": "132",
+    "title": "hebeleaudi",
+    "authors": [
+      "audi1"
+    ],
+    "author": "audi1",
+    "is_borrowed": false,
+    "book_type": "Audio",
+    "duration_minutes": 245,
+    "narrator": "bebe23"
+  },
+  {
+    "isbn": "135351",
+    "title": "audi3",
+    "authors": [
+      "audi1"
+    ],
+    "author": "audi1",
+    "is_borrowed": false,
+    "book_type": "Audio",
+    "duration_minutes": 23
   }
 ]
