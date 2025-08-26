@@ -252,29 +252,46 @@ Choose: 4
 
 ### Stage 3: FastAPI ile REST API
 
-Swagger/OpenAPI arayüzü, HTTP endpoint’leri, otomatik testler ve demo scriptleri.
+Swagger/OpenAPI arayüzü, HTTP endpoint’leri, otomatik testler, gelişmiş arama, kitap tipleri (Physical / Digital / Audio), modal edit, pagination ve istatistikler.
 
-**Örnek API Çıktısı:**
+**Güncel Root Örneği:**
+
+```http
+GET /
+200 OK
+{
+  "message": "Library Management API - Stage 3",
+  "version": "3.0.0",
+  "features": [
+    "Open Library Integration",
+    "ISBN-based book addition",
+    "Full CRUD operations",
+    "Web Frontend"
+  ],
+  "docs": "/docs",
+  "redoc": "/redoc",
+  "frontend": "/static/index.html"
+}
+```
+
+**Güncel Health Örneği (Alanlar kitap sayısına göre değişir):**
 
 ```http
 GET /health
 200 OK
 {
-  "status": "ok"
-}
-
-GET /books
-200 OK
-[
-  {
-    "isbn": "9780140449136",
-    "title": "The Odyssey",
-    "authors": ["Homer"]
+  "status": "healthy",
+  "api_version": "3.0.0",
+  "total_books": 26,
+  "features": {
+    "open_library_integration": true,
+    "isbn_support": true,
+    "json_persistence": true
   }
-]
+}
 ```
 
-**Örnek Test Çıktısı:**
+**Örnek Test Runner Çıktısı (test_stage3.py / test_enhanced.py):**
 
 ```shell
 === Stage 3 FastAPI Files Check ===
@@ -292,21 +309,25 @@ GET /books
 
 === FastAPI Manual Test ===
 ✓ Root endpoint response: 200
-✓ Response data: {'message': 'Welcome to the Library API!'}
+✓ Root contains version and features
 ✓ Health endpoint response: 200
-✓ Health data: {'status': 'ok'}
+✓ Health contains status=healthy
 ```
 
 ### Test Çalıştırma
 
 ```bash
-# Tüm testleri çalıştır (43 test)
+# Tüm testleri çalıştır
 pytest -v
 
-# Stage bazında testler
-pytest stage1_oop/tests/ -v     # 4 test
-pytest stage2_api/tests/ -v     # 10 test  
-pytest stage3_fastapi/tests/ -v # 29 test
+# Stage bazında (sayılar yeni feature'lara göre değişebilir)
+pytest stage1_oop/tests/ -v
+pytest stage2_api/tests/ -v
+pytest stage3_fastapi/tests/ -v
+
+# Ek manuel doğrulama runner'ları
+python -m stage3_fastapi.test_stage3
+python -m stage3_fastapi.test_enhanced
 ```
 
 ### Stage 3 FastAPI Dosya ve Import Testi
@@ -317,7 +338,7 @@ Stage 3 FastAPI package'ının dosya yapısı ve importlarının doğru olup olm
 python -m stage3_fastapi.test_stage3
 ```
 
-**Tipik Çıktı:**
+**Tipik Çıktı (Özet):**
 
 ```shell
 === Stage 3 FastAPI Files Check ===
@@ -334,10 +355,8 @@ python -m stage3_fastapi.test_stage3
 ✓ App title: Library API
 
 === FastAPI Manual Test ===
-✓ Root endpoint response: 200
-✓ Response data: {'message': 'Welcome to the Library API!'}
-✓ Health endpoint response: 200
-✓ Health data: {'status': 'ok'}
+✓ Root endpoint ✓
+✓ Health endpoint ✓ (healthy)
 ```
 
 ### Test Kapsamı
@@ -529,53 +548,25 @@ uvicorn stage3_fastapi.api:app --reload
 
 ## 🚀 İleri Seviye Özellikler
 
-### ✅ Tamamlanmış Geliştirmeler (Stage 3 - JSON Tabanlı)
+### ✅ Stage 3'te Tamamlanan Modern Özellikler
 
-- **🔄 PUT Endpoint**: Kitap güncelleme API'si
-- **🌐 Web Frontend**: Modern HTML/CSS/JS arayüzü
-- **📱 Responsive**: Mobil uyumlu tasarım
-- **🔒 CORS**: Frontend-backend entegrasyonu
-- **⚡ Real-time**: Canlı veri güncellemeleri
-- **📦 JSON Storage**: Güvenilir dosya tabanlı kalıcılık
+- Çoklu kitap tipleri (Physical / Digital / Audio) + tip değiştirme
+- Modal edit + kısmi güncelleme (PUT patch-benzeri)
+- Gelişmiş arama + tip filtresi + pagination
+- Tip bazlı istatistik kartları /statistics endpoint
+- Borrow / Return tek endpoint (action=borrow|return)
+- Responsive, modern Bootstrap 5 UI + canlı liste yenileme
+- JSON kalıcı katman + Pydantic validation
+- CLI & API aynı veri kaynağını paylaşır
 
-### 🚀 Gelecek Geliştirmeler (Stage 3+ - SQLite + Docker)
+### 🚧 Stage 3+ (Planlanan - Henüz Uygulanmadı)
 
-- **🗄️ SQLite Database**: İlişkisel veritabanı geçişi
-- **🐳 Docker**: Container ve orchestration
+- SQLite veritabanı (migration + schema)
+- Docker & docker-compose production yapılandırması
 
+### 🗂️ Stage3_plus Dizin Durumu
 
-### 🎨 Stage 3+ Ek İyileştirmeler (Ağustos 2025)
-
-#### 📚 Kitap Tipleri ve Özel Alanlar
-
-- **🎧 Audio Book Desteği**: Narrator ve süre bilgileri
-- **💻 Digital Book Desteği**: Dosya boyutu ve format bilgileri  
-- **📖 Physical Book Desteği**: Raf konumu bilgileri
-- **🔄 Tip Değiştirme**: Kitap tipini edit ile değiştirme
-- **📊 Tip Bazlı İstatistikler**: Audio, Digital, Physical sayıları
-
-#### 🎨 Modern UI/UX İyileştirmeleri
-
-- **🌈 Gelişmiş Tasarım**: Gradient renkler, animasyonlar
-- **📊 Güzel İstatistikler**: Renkli kartlar, hover efektleri
-- **🔍 Gelişmiş Arama**: Kitap tipi filtresi, card görünümü
-- **✏️ Modal Edit**: Popup ile kitap düzenleme
-- **📄 Sayfalama**: Gelişmiş pagination, sayfa numarası seçimi
-
-#### 🛠️ İşlevsellik İyileştirmeleri
-
-- **📝 Manuel Ekleme**: Tüm kitap tiplerini destekler
-- **🔧 ISBN Ekleme**: Kitap tipi seçimi ile ekleme
-- **🔄 Borrow/Return**: Arama sonuçlarında da çalışır
-- **🎯 Filtreleme**: Tüm sayfalarda çalışan filtreler
-- **⚡ Canlı Güncelleme**: Anlık veri senkronizasyonu
-
-#### 🎯 API Geliştirmeleri
-
-- **📦 Genişletilmiş Model**: Tüm kitap tiplerini destekler
-- **🔄 PUT Endpoint**: Tüm alanları günceller
-- **✅ Validation**: Pydantic ile gelişmiş doğrulama
-- **📊 Response Model**: Zengin kitap verileri
+Şu an iskelet halinde; veritabanı ve container entegrasyonu burada geliştirilecek.
 
 ---
 
