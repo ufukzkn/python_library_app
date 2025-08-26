@@ -87,6 +87,51 @@ uvicorn stage3_fastapi.api:app --reload
 - **ReDoc**: <http://127.0.0.1:8000/redoc>
 - **Health Check**: <http://127.0.0.1:8000/health>
 
+## 📸 Arayüz Görüntüleri
+
+### 🌐 Modern Web Arayüzü
+
+#### 📊 API Ana Sayfa & İstatistikler
+
+![API Homepage](screenshots/homepage.png)
+
+*Modern Bootstrap 5 tasarımı, API durumu, istatistik kartları ve responsive layout*
+
+#### 📚 Kitap Listesi & Filtreleme
+
+![Books List](screenshots/books-list.png)
+
+*Kitap tipleri (📖 Physical, 💻 Digital, 🎧 Audio), borrow/return durumu, gelişmiş filtreleme*
+
+#### ➕ Kitap Ekleme (ISBN & Manuel)
+
+![Add Books](screenshots/add-books.png)
+
+*ISBN ile otomatik ekleme (Open Library API) ve manuel ekleme seçenekleri*
+
+#### 🔍 Gelişmiş Arama & Modal Edit
+
+![Search](screenshots/search.png)
+
+![Edit](screenshots/edit.png)
+*Canlı arama, tip filtresi, modal edit penceresi, tip değiştirme*
+
+#### 📄 Gelişmiş Sayfalama
+
+![Pagination](screenshots/pagination.png)
+
+*Sayfa numarası seçimi, sayfa boyutu ayarı, gelişmiş navigasyon*
+
+#### 📋 Swagger API Dokümantasyonu
+
+![Swagger Docs](screenshots/swagger-docs.png)
+
+*İnteraktif API dokümantasyonu, endpoint testleri, model şemaları*
+
+### 📱 Responsive Tasarım
+
+Arayüz mobil, tablet ve desktop cihazlarda mükemmel çalışır.
+
 ## 📖 API Dokümantasyonu (Güncel)
 
 Stage 3 API şu an JSON tabanlı kalıcılık kullanır ve kitap tiplerine (Physical / Digital / Audio) göre genişletilmiş alanları destekler.
