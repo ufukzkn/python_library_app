@@ -566,42 +566,6 @@ async function borrowBook(isbn) {
     }
 }
 
-// Return book function - separate for clarity
-async function returnBook(isbn) {
-    try {
-        const response = await fetch(`${API_BASE}/books/${isbn}/borrow`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ action: 'return' })
-        });
-
-        if (response.ok) {
-            const updatedBook = await response.json();
-            showToast(`📖 Book returned: ${updatedBook.title}`, 'success');
-            
-            // Refresh books and update search results if any
-            fetchBooks();
-            
-            // If there are search results, refresh them too
-            const searchQuery = document.getElementById('searchQuery')?.value?.trim();
-            if (searchQuery) {
-                setTimeout(() => {
-                    searchBooks(searchQuery);
-                }, 100);
-            }
-            
-            checkApiStatus();
-        } else {
-            const error = await response.json();
-            showToast(`❌ Error: ${error.detail}`, 'danger');
-        }
-    } catch (error) {
-        showToast('❌ Network error. Check if API is running.', 'danger');
-    }
-}
-
 // Edit book function - MODERN VERSION WITH MODAL
 function editBook(isbn) {
     // Find the book

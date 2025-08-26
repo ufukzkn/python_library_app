@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📚 Library Management System</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="style.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Toast Container -->
+    <div class="toast-container position-fixed top-0 end-0 p-3"></div>
+
+    <!-- Edit Book Modal -->
+    <div class="modal fade" id="editBookModal" tabindex="-1" aria-labelledby="editBookModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editBookModalLabel">
+                        <i class="fas fa-edit"></i> Edit Book
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="editBookForm">
+                        <input type="hidden" id="editBookIsbn" />
+                        
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="editTitle" class="form-label">Title</label>
+                                    <input type="text" class="form-control" id="editTitle" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="editAuthors" class="form-label">Authors (comma separated)</label>
+                                    <input type="text" class="form-control" id="editAuthors" placeholder="Author 1, Author 2" required>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="editBookType" class="form-label">Book Type</label>
+                                    <select class="form-select" id="editBookType">
+                                        <option value="Physical">📖 Physical Book</option>
+                                        <option value="Digital">💻 Digital Book</option>
+                                        <option value="Audio">🎧 Audio Book</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="editBorrowStatus" class="form-label">Status</label>
+                                    <select class="form-select" id="editBorrowStatus">
+                                        <option value="false">📚 Available</option>
+                                        <option value="true">📖 Borrowed</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Dynamic fields based on book type -->
+                        <div id="editExtraFields"></div>
+                        
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="mb-3">
+                                    <label for="editIsbn" class="form-label">ISBN</label>
+                                    <input type="text" class="form-control" id="editIsbn" readonly style="background-color: #f8f9fa;">
+                                    <small class="text-muted">ISBN cannot be changed</small>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        <i class="fas fa-times"></i> Cancel
+                    </button>
+                    <button type="button" class="btn btn-primary" onclick="saveBookEdit()">
+                        <i class="fas fa-save"></i> Save Changes
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="container mt-4">
+        <!-- Header -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Our JavaScript -->
+    <script src="script.js"></script>
+</body>
+</html>
+    <div class="container mt-4">
+        <!-- Header -->
+        <div class="row mb-4">
+            <div class="col">
+                <div class="card">
+                    <div class="card-header text-center">
+                        <h1><i class="fas fa-book"></i> Library Management System</h1>
+                        <p class="mb-0">FastAPI + JavaScript Web Interface</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- API Status -->
+        <div class="row mb-4">
+            <div class="col">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title"><i class="fas fa-heartbeat"></i> API Status</h5>
+                        <div id="apiStatus" class="d-flex align-items-center">
+                            <div class="spinner-border spinner-border-sm me-2" role="status"></div>
+                            <span>Checking API...</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Library Statistics -->
+        <div class="row mb-4">
+            <div class="col">
+                <div class="card stats-card">
+                    <div class="card-header">
+                        <h5><i class="fas fa-chart-bar"></i> Library Statistics</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row text-center">
+                            <div class="col-3 stats-total">
+                                <div class="stats-icon">📚</div>
+                                <div class="stats-number" id="totalBooks">-</div>
+                                <div class="stats-label">Total Books</div>
+                            </div>
+                            <div class="col-3 stats-borrowed">
+                                <div class="stats-icon">📖</div>
+                                <div class="stats-number" id="borrowedBooks">-</div>
+                                <div class="stats-label">Borrowed</div>
+                            </div>
+                            <div class="col-2 stats-physical">
+                                <div class="stats-icon">📚</div>
+                                <div class="stats-number" id="physicalBooks">-</div>
+                                <div class="stats-label">Physical</div>
+                            </div>
+                            <div class="col-2 stats-digital">
+                                <div class="stats-icon">💻</div>
+                                <div class="stats-number" id="digitalBooks">-</div>
+                                <div class="stats-label">Digital</div>
+                            </div>
+                            <div class="col-2 stats-audio">
+                                <div class="stats-icon">🎧</div>
+                                <div class="stats-number" id="audioBooks">-</div>
+                                <div class="stats-label">Audio</div>
+                            </div>
+                        </div>
+                        <button class="btn btn-outline-primary w-100 mt-3" onclick="refreshBooks()">
+                            <i class="fas fa-sync"></i> Refresh
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Search Books -->
+        <div class="row mb-4">
+            <div class="col">
+                <div class="card">
+                    <div class="card-header">
+                        <h5><i class="fas fa-search"></i> Search Books</h5>
+                    </div>
+                    <div class="card-body">
+                        <form id="searchForm">
+                            <div class="mb-3">
+                                <label for="searchQuery" class="form-label">Search</label>
+                                <input type="text" class="form-control" id="searchQuery" placeholder="Enter title, author, or ISBN">
+                                <div class="form-text">Search by book title, author name, or ISBN</div>
+                            </div>
+                            <button type="submit" class="btn btn-outline-primary w-100">
+                                <i class="fas fa-search"></i> Search
+                            </button>
+                        </form>
+                        <div id="searchResults" class="mt-3"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Add Book Section -->
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5><i class="fas fa-plus"></i> Add Book by ISBN</h5>
+                    </div>
+                    <div class="card-body">
+                        <form id="addBookForm">
+                            <div class="mb-3">
+                                <label for="isbn" class="form-label">ISBN</label>
+                                <input type="text" class="form-control" id="isbn" placeholder="9780140328721" required>
+                                <div class="form-text">Enter ISBN to fetch book info from Open Library</div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="bookType" class="form-label">Book Type</label>
+                                <select class="form-control" id="bookType">
+                                    <option value="Physical">📖 Physical Book</option>
+                                    <option value="Digital">💻 Digital Book</option>
+                                    <option value="Audio">🎧 Audio Book</option>
+                                </select>
+                            </div>
+                            <div id="extraFields"></div>
+                            <button type="submit" class="btn btn-primary w-100">
+                                <i class="fas fa-plus"></i> Add Book
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Manual Add Book -->
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5><i class="fas fa-edit"></i> Add Book Manually</h5>
+                    </div>
+                    <div class="card-body">
+                        <form id="manualBookForm">
+                            <div class="mb-3">
+                                <label for="manualTitle" class="form-label">Title</label>
+                                <input type="text" class="form-control" id="manualTitle" placeholder="Book title" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="manualAuthors" class="form-label">Authors</label>
+                                <input type="text" class="form-control" id="manualAuthors" placeholder="Author 1, Author 2" required>
+                                <div class="form-text">Separate multiple authors with commas</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="manualIsbn" class="form-label">ISBN</label>
+                                        <input type="text" class="form-control" id="manualIsbn" placeholder="9780140328721" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="manualType" class="form-label">Book Type</label>
+                                        <select class="form-control" id="manualType">
+                                            <option value="Physical">📖 Physical Book</option>
+                                            <option value="Digital">💻 Digital Book</option>
+                                            <option value="Audio">🎧 Audio Book</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="manualExtraFields"></div>
+                            <button type="submit" class="btn btn-success w-100">
+                                <i class="fas fa-plus"></i> Add Manual Book
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Books List -->
+        <div class="row">
+            <div class="col">
+                <div class="card">
+                    <div class="card-header" style="cursor: pointer;" onclick="toggleBooksSection()">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h5><i class="fas fa-list"></i> Books in Library</h5>
+                            <div class="d-flex align-items-center gap-2">
+                                <span id="bookCount" class="badge bg-light text-dark">0 books</span>
+                                <i class="fas fa-chevron-up" id="booksChevron"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body" id="booksSection">
+                        <!-- Pagination Controls -->
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <div class="d-flex align-items-center gap-2">
+                                <label for="pageSize" class="form-label mb-0">Show:</label>
+                                <select class="form-select form-select-sm" id="pageSize" style="width: 110px;" onchange="changePageSize()">
+                                    <option value="10">10 books</option>
+                                    <option value="15" selected>15 books</option>
+                                    <option value="25">25 books</option>
+                                    <option value="50">50 books</option>
+                                </select>
+                                <span class="text-muted ms-2" id="pageInfo">Page 1 of 1</span>
+                            </div>
+                            <button class="btn btn-sm btn-outline-primary" onclick="toggleAllBooks()">
+                                <i class="fas fa-eye" id="toggleIcon"></i> <span id="toggleText">Expand All</span>
+                            </button>
+                        </div>
+                        
+                        <!-- Filter Tabs -->
+                        <div class="mb-3">
+                            <div class="btn-group w-100" role="group">
+                                <button type="button" class="btn btn-outline-primary active" onclick="filterBooks('all')" id="filter-all">
+                                    <i class="fas fa-list"></i> All Books
+                                </button>
+                                <button type="button" class="btn btn-outline-success" onclick="filterBooks('available')" id="filter-available">
+                                    <i class="fas fa-check-circle"></i> Available
+                                </button>
+                                <button type="button" class="btn btn-outline-warning" onclick="filterBooks('borrowed')" id="filter-borrowed">
+                                    <i class="fas fa-hand-holding"></i> Borrowed
+                                </button>
+                                <button type="button" class="btn btn-outline-info" onclick="filterBooks('physical')" id="filter-physical">
+                                    📖 Physical
+                                </button>
+                                <button type="button" class="btn btn-outline-secondary" onclick="filterBooks('digital')" id="filter-digital">
+                                    💻 Digital
+                                </button>
+                                <button type="button" class="btn btn-outline-dark" onclick="filterBooks('audio')" id="filter-audio">
+                                    🎧 Audio
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div id="booksList">
+                            <div class="text-center">
+                                <div class="spinner-border" role="status"></div>
+                                <p class="mt-2">Loading books...</p>
+                            </div>
+                        </div>
+                        
+                        <!-- Pagination Navigation -->
+                        <nav aria-label="Books pagination" id="paginationNav" style="display: none;">
+                            <ul class="pagination justify-content-center">
+                                <li class="page-item" id="prevPage">
+                                    <a class="page-link" href="#" onclick="changePage(currentPage - 1)">
+                                        <i class="fas fa-chevron-left"></i> Previous
+                                    </a>
+                                </li>
+                                <li class="page-item active" id="currentPageItem">
+                                    <span class="page-link" id="currentPageSpan">1</span>
+                                </li>
+                                <li class="page-item" id="nextPage">
+                                    <a class="page-link" href="#" onclick="changePage(currentPage + 1)">
+                                        Next <i class="fas fa-chevron-right"></i>
+                                    </a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div class="toast-container"></div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Our JavaScript -->
+    <script src="script.js"></script>
+</body>
+</html>

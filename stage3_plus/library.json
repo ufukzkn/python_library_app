@@ -1,21 +1,21 @@
 [
   {
     "isbn": "123",
-    "title": "Sample Physical Book",
+    "title": "birikiüç",
     "authors": [
-      "Sample Author"
+      "123"
     ],
-    "author": "Sample Author",
+    "author": "123",
     "is_borrowed": false,
     "book_type": "Physical"
   },
   {
     "isbn": "194313",
-    "title": "Example Physical Book",
+    "title": "string",
     "authors": [
-      "Example Author"
+      "string"
     ],
-    "author": "Example Author",
+    "author": "string",
     "is_borrowed": true,
     "book_type": "Physical"
   },
@@ -52,21 +52,21 @@
   },
   {
     "isbn": "0449143872",
-    "title": "Demo Physical Book",
+    "title": "string",
     "authors": [
-      "Demo Author"
+      "string"
     ],
-    "author": "Demo Author",
+    "author": "string",
     "is_borrowed": true,
     "book_type": "Physical"
   },
   {
     "isbn": "3141134",
-    "title": "Demo Educational Book",
+    "title": "1341",
     "authors": [
-      "Demo Educational Author"
+      "sgsfıg"
     ],
-    "author": "Demo Educational Author",
+    "author": "sgsfıg",
     "is_borrowed": false,
     "book_type": "Physical"
   },
@@ -83,17 +83,14 @@
   {
     "isbn": "0618343997",
     "title": "The Lord of the Rings",
-    "authors": [
-      "unknown"
-    ],
-    "author": "unknown",
-    "is_borrowed": false,
-    "book_type": "Physical",
-    "shelf_location": "a14"
+    "authors": [],
+    "author": "Unknown Author",
+    "is_borrowed": true,
+    "book_type": "Physical"
   },
   {
     "isbn": "9780140449136",
-    "title": "Crime and punishment - Updated - Updated - Updated - Updated - Updated - Updated - Updated - Updated - Updated - Updated",
+    "title": "Crime and punishment",
     "authors": [
       "Фёдор Михайлович Достоевский"
     ],
@@ -113,11 +110,11 @@
   },
   {
     "isbn": "123123",
-    "title": "Sample Digital Text Book",
+    "title": "hebele",
     "authors": [
-      "Sample Digital Author"
+      "rifat"
     ],
-    "author": "Sample Digital Author",
+    "author": "rifat",
     "is_borrowed": true,
     "book_type": "Digital",
     "file_size_mb": 2.0,
@@ -125,11 +122,11 @@
   },
   {
     "isbn": "135252",
-    "title": "Sample Audio Book Demo",
+    "title": "hebele124",
     "authors": [
-      "Sample Audio Author"
+      "rifat41"
     ],
-    "author": "Sample Audio Author",
+    "author": "rifat41",
     "is_borrowed": false,
     "book_type": "Audio"
   },
@@ -149,66 +146,66 @@
   },
   {
     "isbn": "1111111",
-    "title": "Demo Audio Book Collection",
+    "title": "hebeleq123",
     "authors": [
-      "Demo Collection Author"
+      "ben"
     ],
-    "author": "Demo Collection Author",
+    "author": "ben",
     "is_borrowed": true,
     "book_type": "Audio"
   },
   {
     "isbn": "131",
-    "title": "Multi-Author Audio Book",
+    "title": "hebele",
     "authors": [
-      "First Author",
-      "Second Author"
+      "af",
+      "bef"
     ],
-    "author": "First Author",
+    "author": "af",
     "is_borrowed": false,
     "book_type": "Audio"
   },
   {
     "isbn": "1111111123",
-    "title": "Advanced Audio Book",
+    "title": "asgd123",
     "authors": [
-      "Advanced Author"
+      "rifat"
     ],
-    "author": "Advanced Author",
+    "author": "rifat",
     "is_borrowed": true,
     "book_type": "Audio",
     "duration_minutes": 341,
-    "narrator": "Professional Narrator"
+    "narrator": "be3122"
   },
   {
     "isbn": "412",
-    "title": "Sample Digital Book",
+    "title": "hebele",
     "authors": [
-      "Digital Sample Author"
+      "rifat"
     ],
-    "author": "Digital Sample Author",
+    "author": "rifat",
     "is_borrowed": true,
     "book_type": "Digital"
   },
   {
     "isbn": "112",
-    "title": "Complete Audio Book Example",
+    "title": "hebeleaudi",
     "authors": [
-      "Audio Example Author"
+      "audi1"
     ],
-    "author": "Audio Example Author",
+    "author": "audi1",
     "is_borrowed": true,
     "book_type": "Audio",
     "duration_minutes": 123,
-    "narrator": "Example Narrator"
+    "narrator": "bebe"
   },
   {
     "isbn": "113",
-    "title": "Complete Digital Book Example",
+    "title": "hebeledigi",
     "authors": [
-      "Digital Example Author"
+      "digi1"
     ],
-    "author": "Digital Example Author",
+    "author": "digi1",
     "is_borrowed": false,
     "book_type": "Digital",
     "file_size_mb": 2.0,
@@ -216,63 +213,25 @@
   },
   {
     "isbn": "132",
-    "title": "Advanced Audio Book Example",
+    "title": "hebeleaudi",
     "authors": [
-      "Advanced Audio Author"
+      "audi1"
     ],
-    "author": "Advanced Audio Author",
+    "author": "audi1",
     "is_borrowed": false,
     "book_type": "Audio",
     "duration_minutes": 245,
-    "narrator": "Advanced Narrator"
+    "narrator": "bebe23"
   },
   {
     "isbn": "135351",
-    "title": "Short Audio Book Demo",
+    "title": "audi3",
     "authors": [
-      "Demo Audio Author"
+      "audi1"
     ],
-    "author": "Demo Audio Author",
+    "author": "audi1",
     "is_borrowed": false,
     "book_type": "Audio",
     "duration_minutes": 23
-  },
-  {
-    "isbn": "test-1756168283",
-    "title": "Test Book for API",
-    "authors": [
-      "Test Author"
-    ],
-    "author": "Test Author",
-    "is_borrowed": false,
-    "book_type": "Physical"
-  },
-  {
-    "isbn": "test-1756168593",
-    "title": "Test Book for API",
-    "authors": [
-      "Test Author"
-    ],
-    "author": "Test Author",
-    "is_borrowed": false,
-    "book_type": "Physical"
-  },
-  {
-    "isbn": "test-1756168599",
-    "title": "Test Book for API",
-    "authors": [
-      "Test Author"
-    ],
-    "author": "Test Author",
-    "is_borrowed": false,
-    "book_type": "Physical"
-  },
-  {
-    "isbn": "9780134685991",
-    "title": "Effective Java",
-    "authors": [],
-    "author": "Unknown Author",
-    "is_borrowed": false,
-    "book_type": "Physical"
   }
 ]

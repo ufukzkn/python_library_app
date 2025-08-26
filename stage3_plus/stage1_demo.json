@@ -1,0 +1,11 @@
+[
+  {
+    "isbn": "978-0345339683",
+    "title": "The Hobbit",
+    "authors": [
+      "J.R.R. Tolkien"
+    ],
+    "author": "J.R.R. Tolkien",
+    "is_borrowed": false
+  }
+]

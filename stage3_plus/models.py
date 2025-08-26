@@ -83,7 +83,7 @@ class ISBNRequest(BaseModel):
 class BookUpdateRequest(BaseModel):
     """Request model for updating a book"""
     title: Optional[str] = Field(None, min_length=1, description="New title for the book")
-    authors: Optional[List[str]] = Field(None, min_length=1, description="New authors list for the book")
+    authors: Optional[List[str]] = Field(None, min_items=1, description="New authors list for the book")
     is_borrowed: Optional[bool] = Field(None, description="New borrowed status for the book")
     book_type: Optional[str] = Field(None, pattern="^(Physical|Digital|Audio)$", description="Book type")
     

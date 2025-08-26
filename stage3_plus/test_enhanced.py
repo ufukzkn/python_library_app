@@ -65,8 +65,7 @@ def test_api_endpoints():
         
         print("\n=== Frontend Files Check ===")
         import os
-        current_dir = os.path.dirname(os.path.abspath(__file__))
-        static_dir = os.path.join(current_dir, "static")
+        static_dir = "static"
         files_to_check = ["index.html", "style.css", "script.js"]
         
         for file in files_to_check:
