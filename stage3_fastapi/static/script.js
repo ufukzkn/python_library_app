@@ -128,7 +128,7 @@ function displayBooks(books, filter = 'all') {
                         <small class="text-muted">
                             <i class="fas fa-user"></i> ${book.authors.join(', ')} | 
                             <i class="fas fa-barcode"></i> ${book.isbn} |
-                            <span class="badge bg-secondary">${bookType}</span>
+                            <span class="badge bg-secondary">${getBookTypeIcon(bookType)} ${bookType}</span>
                         </small>
                     </div>
                     <div>
@@ -143,7 +143,7 @@ function displayBooks(books, filter = 'all') {
                             <strong>Title:</strong> ${book.title}<br>
                             <strong>Authors:</strong> ${book.authors.join(', ')}<br>
                             <strong>ISBN:</strong> ${book.isbn}<br>
-                            <strong>Type:</strong> <span class="badge bg-info">${bookType}</span>
+                            <strong>Type:</strong> <span class="badge bg-info">${getBookTypeIcon(bookType)} ${bookType}</span>
                         </div>
                         
                         <!-- Type-specific information -->
