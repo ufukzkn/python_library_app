@@ -87,72 +87,116 @@ uvicorn stage3_fastapi.api:app --reload
 - **ReDoc**: <http://127.0.0.1:8000/redoc>
 - **Health Check**: <http://127.0.0.1:8000/health>
 
-## 📖 API Dokümantasyonu
+## 📖 API Dokümantasyonu (Güncel)
 
-### Endpoint'ler
+Stage 3 API şu an JSON tabanlı kalıcılık kullanır ve kitap tiplerine (Physical / Digital / Audio) göre genişletilmiş alanları destekler.
 
-| Method | Endpoint | Açıklama | Body |
-|--------|----------|----------|------|
-| `GET` | `/` | API bilgisi ve sürüm | - |
-| `GET` | `/health` | Sistem durumu kontrolü | - |
-| `GET` | `/books` | Tüm kitapları listele | - |
-| `POST` | `/books` | ISBN ile kitap ekle | `{"isbn": "9780140328721"}` |
-| `GET` | `/books/{isbn}` | Belirli kitabı getir | - |
-| `PUT` | `/books/{isbn}` | Kitap bilgilerini güncelle | `{"title": "Yeni Başlık", "authors": ["Yazar"], "is_borrowed": false}` |
-| `DELETE` | `/books/{isbn}` | Kitabı sil | - |
+### 🔗 Endpoint Listesi
 
-### Örnek API İstekleri
+| Method | Endpoint | Açıklama | Body / Query | Notlar |
+|--------|----------|----------|--------------|--------|
+| GET | `/` | API root & metadata | - | Versiyon, özellikler, frontend linki |
+| GET | `/health` | Sağlık durumu & kitap sayısı | - | `status: healthy` döner |
+| GET | `/statistics` | Toplam & tip bazlı istatistikler | - | borrowed / available / type counts |
+| GET | `/books` | Tüm kitapları listele | - | Dizi döner |
+| GET | `/books/{isbn}` | Tek kitap getir | - | 404 yoksa |
+| GET | `/books/search` | Arama & filtre | `?query=...&book_type=...` | `book_type` opsiyonel |
+| POST | `/books` | ISBN ile Open Library'den ekle | `{isbn, book_type?, ...tip alanları}` | Var olan ISBN 400 |
+| POST | `/books/manual` | Manuel kitap ekle | `{isbn,title,authors[],book_type,...}` | Authors en az 1 |
+| PUT | `/books/{isbn}` | Kısmi/güncelle | JSON body | Sadece gelen alanlar değişir |
+| DELETE | `/books/{isbn}` | Kitap sil | - | 204 No Content |
+| POST | `/books/{isbn}/borrow` | Ödünç / iade | `{"action": "borrow"}` veya `{"action": "return"}` | Yanlış state -> 400 |
 
-**1. Kitap Ekleme:**
+### 🧾 Örnek İstekler
+
+ISBN ile (otomatik) ekleme (Physical varsayılan):
 
 ```bash
-curl -X POST "http://127.0.0.1:8000/books" \
-     -H "Content-Type: application/json" \
-     -d '{"isbn": "9780140328721"}'
+curl -X POST http://127.0.0.1:8000/books \
+  -H "Content-Type: application/json" \
+  -d '{"isbn":"9780140328721","book_type":"Physical","shelf_location":"A-12"}'
 ```
 
-**Response (201 Created):**
+Manuel Digital kitap ekleme:
+
+```bash
+curl -X POST http://127.0.0.1:8000/books/manual \
+  -H "Content-Type: application/json" \
+  -d '{"isbn":"1112223334445","title":"Async Python","authors":["Jane Dev"],"book_type":"Digital","file_size_mb":5.2,"file_format":"PDF"}'
+```
+
+Arama (tip filtresiyle):
+
+```bash
+curl "http://127.0.0.1:8000/books/search?query=python&book_type=Digital"
+```
+
+Ödünç alma:
+
+```bash
+curl -X POST http://127.0.0.1:8000/books/9780140328721/borrow \
+  -H "Content-Type: application/json" \
+  -d '{"action":"borrow"}'
+```
+
+İade:
+
+```bash
+curl -X POST http://127.0.0.1:8000/books/9780140328721/borrow \
+  -H "Content-Type: application/json" \
+  -d '{"action":"return"}'
+```
+
+Güncelleme (tip değiştir & alan ekle):
+
+```bash
+curl -X PUT http://127.0.0.1:8000/books/1112223334445 \
+  -H "Content-Type: application/json" \
+  -d '{"book_type":"Audio","duration_minutes":480,"narrator":"Voice Pro"}'
+```
+
+İstatistikler:
+
+```bash
+curl http://127.0.0.1:8000/statistics
+```
+
+Örnek /statistics cevabı:
 
 ```json
 {
-  "isbn": "9780140328721",
-  "title": "Fantastic Mr. Fox",
-  "authors": ["Roald Dahl"],
-  "is_borrowed": false
+  "total_books": 12,
+  "available_books": 10,
+  "borrowed_books": 2,
+  "physical_books": 5,
+  "digital_books": 4,
+  "audio_books": 3
 }
 ```
 
-**2. Tüm Kitapları Listeleme:**
+### 🧩 Model Alanları (Tip Bazlı)
 
-```bash
-curl "http://127.0.0.1:8000/books"
-```
+Ortak alanlar: `isbn`, `title`, `authors[]`, `is_borrowed`, `book_type`
 
-**3. Belirli Kitap Getirme:**
+Tip özel alanlar:
 
-```bash
-curl "http://127.0.0.1:8000/books/9780140328721"
-```
+- Physical: `shelf_location`
+- Digital: `file_size_mb`, `file_format`
+- Audio: `duration_minutes`, `narrator`
 
-**4. Kitap Güncelleme:**
+### ⚠️ Hata Kodları
 
-```bash
-curl -X PUT "http://127.0.0.1:8000/books/9780140328721" \
-     -H "Content-Type: application/json" \
-     -d '{"title": "Fantastic Mr. Fox - Updated", "is_borrowed": true}'
-```
+- 400: Geçersiz ISBN, duplicate, yanlış action, invalid state (zaten ödünçte / zaten iade)
+- 404: Kitap bulunamadı
+- 500: Beklenmeyen sunucu hatası
+- 503: Health check hata durumu
 
-**5. Kitap Silme:**
+### 🔍 Notlar
 
-```bash
-curl -X DELETE "http://127.0.0.1:8000/books/9780140328721"
-```
-
-### Hata Kodları
-
-- `400 Bad Request`: Geçersiz ISBN veya duplicate kitap
-- `404 Not Found`: Kitap bulunamadı
-- `500 Internal Server Error`: Sunucu hatası
+- `POST /books` Open Library'den veri çeker; yazar listesi boş gelirse minimal fallback olabilir.
+- `PUT /books/{isbn}` kısmi güncelleme yapar (PATCH davranışı gibi çalışır).
+- `POST /books/{isbn}/borrow` içinde `action` alanı hem ödünç hem iade için tek endpoint sağlar.
+- `GET /books/search` author listesinde parça eşleşme yapar (case-insensitive).
 
 ## 🧪 Test Senaryoları
 
